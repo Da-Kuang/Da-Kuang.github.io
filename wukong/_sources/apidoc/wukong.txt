@@ -1,53 +1,53 @@
-Wukong package
+wukong package
 ==============
 
 Submodules
 ----------
 
-Wukong.api module
+wukong.api module
 -----------------
 
-.. automodule:: Wukong.api
+.. automodule:: wukong.api
     :members:
     :undoc-members:
     :show-inheritance:
 
-Wukong.errors module
+wukong.errors module
 --------------------
 
-.. automodule:: Wukong.errors
+.. automodule:: wukong.errors
     :members:
     :undoc-members:
     :show-inheritance:
 
-Wukong.models module
+wukong.models module
 --------------------
 
-.. automodule:: Wukong.models
+.. automodule:: wukong.models
     :members:
     :undoc-members:
     :show-inheritance:
 
-Wukong.query module
+wukong.query module
 -------------------
 
-.. automodule:: Wukong.query
+.. automodule:: wukong.query
     :members:
     :undoc-members:
     :show-inheritance:
 
-Wukong.request module
+wukong.request module
 ---------------------
 
-.. automodule:: Wukong.request
+.. automodule:: wukong.request
     :members:
     :undoc-members:
     :show-inheritance:
 
-Wukong.zookeeper module
+wukong.zookeeper module
 -----------------------
 
-.. automodule:: Wukong.zookeeper
+.. automodule:: wukong.zookeeper
     :members:
     :undoc-members:
     :show-inheritance:
@@ -56,7 +56,7 @@ Wukong.zookeeper module
 Module contents
 ---------------
 
-.. automodule:: Wukong
+.. automodule:: wukong
     :members:
     :undoc-members:
     :show-inheritance:

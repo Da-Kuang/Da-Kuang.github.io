@@ -1,7 +1,7 @@
-Wukong
+wukong
 ======
 
 .. toctree::
    :maxdepth: 5
 
-   Wukong
+   wukong

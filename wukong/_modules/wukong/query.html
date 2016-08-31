@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>wukong.query &mdash; wukong 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="wukong 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> wukong
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">wukong</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>wukong.query</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for wukong.query</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">wukong.errors</span> <span class="k">as</span> <span class="nn">solr_errors</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="n">INFINITE_ROWS</span> <span class="o">=</span> <span class="mi">999999999</span>
+
+
+<div class="viewcode-block" id="SolrNode"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrNode">[docs]</a><span class="k">class</span> <span class="nc">SolrNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The base class to model a tree node in the query logic to SOLR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsed_solr_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the current node to a query string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SolrNode.build_items"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrNode.build_items">[docs]</a>    <span class="k">def</span> <span class="nf">build_items</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a list of items under the current logic operator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">operator</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrUnspecifiedOperatorError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Comparator</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">items</span></div></div>
+
+
+<div class="viewcode-block" id="AND"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.AND">[docs]</a><span class="k">class</span> <span class="nc">AND</span><span class="p">(</span><span class="n">SolrNode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model the AND logic in SOLR query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logic</span> <span class="o">=</span> <span class="s2">&quot;AND&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsed_solr_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parsed_solr_query</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">logic</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">parsed_solr_query</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="OR"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.OR">[docs]</a><span class="k">class</span> <span class="nc">OR</span><span class="p">(</span><span class="n">SolrNode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model the OR logic in SOLR query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logic</span> <span class="o">=</span> <span class="s2">&quot;OR&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsed_solr_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parsed_solr_query</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">logic</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">parsed_solr_query</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="NOT"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.NOT">[docs]</a><span class="k">class</span> <span class="nc">NOT</span><span class="p">(</span><span class="n">SolrNode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model the NOT logic in SOLR query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logic</span> <span class="o">=</span> <span class="s2">&quot;NOT&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NOT</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrError</span><span class="p">(</span>
+                <span class="s2">&quot;Logic node:NOT only supports one operand&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsed_solr_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;!(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parsed_solr_query</span></div>
+
+
+<div class="viewcode-block" id="Comparator"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.Comparator">[docs]</a><span class="k">class</span> <span class="nc">Comparator</span><span class="p">(</span><span class="n">SolrNode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model the compare logic in SOLR query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logic</span> <span class="o">=</span> <span class="s2">&quot;COMP&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsed_solr_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">query_string</span>
+
+        <span class="n">operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="c1"># EQUAL</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;eq&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:[* TO *]&quot;</span> <span class="o">%</span> <span class="n">key</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># NOT EQUAL</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;ne&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:*&quot;</span> <span class="o">%</span> <span class="n">key</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+                <span class="n">query_string</span> <span class="o">+=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">+=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># IN</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;in&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrError</span><span class="p">(</span>
+                    <span class="s2">&quot;Operator:in only takes list type&quot;</span>
+                <span class="p">)</span>
+            <span class="n">new_value</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+                        <span class="n">new_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unicode</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">list_str</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">list_str</span><span class="p">)</span>
+
+        <span class="c1"># NOT IN</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;nin&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrError</span><span class="p">(</span>
+                    <span class="s2">&quot;Operator:not in only takes list type&quot;</span>
+                <span class="p">)</span>
+            <span class="n">new_value</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+                        <span class="n">new_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unicode</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">list_str</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">list_str</span><span class="p">)</span>
+
+        <span class="c1"># WILD CARD</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;wc&#39;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:*</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="n">query_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;**&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># NOT WILD CARD</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;nwc&#39;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:*</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="n">query_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;**&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># GREATER THAN</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:{</span><span class="si">%s</span><span class="s2"> TO *]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># GREATER THAN OR EQUAL TO</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;ge&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:[</span><span class="si">%s</span><span class="s2"> TO *]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># LESS THAN</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:[* TO </span><span class="si">%s</span><span class="s2">}&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># LESS THAN OR EQUAL TO</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;le&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:[* TO </span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+        <span class="c1"># EXISTS</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;ex&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:[* TO *]&quot;</span> <span class="o">%</span> <span class="n">key</span>
+
+        <span class="c1"># NOT EXISTS</span>
+        <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;nex&#39;</span><span class="p">:</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">:[* TO *]&quot;</span> <span class="o">%</span> <span class="n">key</span>
+
+        <span class="c1"># UNKNOWN</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrUnspportedOperatorError</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">query_string</span></div>
+
+
+<div class="viewcode-block" id="SolrQueryManager"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager">[docs]</a><span class="k">class</span> <span class="nc">SolrQueryManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to chain different query methods for SOLR</span>
+<span class="sd">    and construct the final query to SOLR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc_class</span><span class="p">,</span>
+        <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort_str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">weight_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">returned_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">edismax</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">rows</span><span class="o">=</span><span class="n">INFINITE_ROWS</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">facet_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facet_options</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">facet_group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">group_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">group_options</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">boost_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bf_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">boost_query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bq_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">minimum_matches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">text_keywords</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span> <span class="k">if</span> <span class="n">node</span> <span class="k">else</span> <span class="n">AND</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_str</span> <span class="o">=</span> <span class="n">sort_str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_dict</span> <span class="o">=</span> <span class="n">weight_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returned_fields</span> <span class="o">=</span> <span class="n">returned_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edismax</span> <span class="o">=</span> <span class="n">edismax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span> <span class="o">=</span> <span class="n">doc_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facet_fields</span> <span class="o">=</span> <span class="n">facet_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facet_options</span> <span class="o">=</span> <span class="n">facet_options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mincount</span> <span class="o">=</span> <span class="n">mincount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facet_group</span> <span class="o">=</span> <span class="n">facet_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_fields</span> <span class="o">=</span> <span class="n">group_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_limit</span> <span class="o">=</span> <span class="n">group_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_options</span> <span class="o">=</span> <span class="n">group_options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost_func</span> <span class="o">=</span> <span class="n">boost_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bf_weight</span> <span class="o">=</span> <span class="n">bf_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost_query</span> <span class="o">=</span> <span class="n">boost_query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bq_weight</span> <span class="o">=</span> <span class="n">bq_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimum_matches</span> <span class="o">=</span> <span class="n">minimum_matches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_keywords</span> <span class="o">=</span> <span class="n">text_keywords</span>
+
+<div class="viewcode-block" id="SolrQueryManager.to_dict"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the json representation of the query manager</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;doc_class&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">,</span>
+            <span class="s2">&quot;sort_str&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_str</span><span class="p">,</span>
+            <span class="s2">&quot;weight_dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dict</span><span class="p">,</span>
+            <span class="s2">&quot;returned_fields&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">returned_fields</span><span class="p">,</span>
+            <span class="s2">&quot;edismax&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">edismax</span><span class="p">,</span>
+            <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span>
+            <span class="s2">&quot;facet_fields&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facet_fields</span><span class="p">,</span>
+            <span class="s2">&quot;facet_options&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facet_options</span><span class="p">,</span>
+            <span class="s2">&quot;mincount&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mincount</span><span class="p">,</span>
+            <span class="s2">&quot;facet_group&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facet_group</span><span class="p">,</span>
+            <span class="s2">&quot;group_fields&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_fields</span><span class="p">,</span>
+            <span class="s2">&quot;group_limit&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_limit</span><span class="p">,</span>
+            <span class="s2">&quot;group_options&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_options</span><span class="p">,</span>
+            <span class="s2">&quot;boost_func&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost_func</span><span class="p">,</span>
+            <span class="s2">&quot;bf_weight&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bf_weight</span><span class="p">,</span>
+            <span class="s2">&quot;boost_query&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost_query</span><span class="p">,</span>
+            <span class="s2">&quot;bq_weight&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bq_weight</span><span class="p">,</span>
+            <span class="s2">&quot;minimum_matches&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_matches</span><span class="p">,</span>
+            <span class="s2">&quot;text_keywords&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_keywords</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.filter"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filter the SOLR documents by mathmatical and logical operators.</span>
+<span class="sd">        Usage:</span>
+<span class="sd">            filter(name__eq=&quot;Test Name&quot;)</span>
+<span class="sd">            filter(name__eq=&quot;Test Name&quot;, city__wc=&quot;Test*&quot;)</span>
+<span class="sd">            filter(OR(name__eq=&quot;Test Name&quot;, city__wc=&quot;Test*&quot;),</span>
+<span class="sd">                    population__ge=300000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">items</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">logic</span> <span class="o">!=</span> <span class="s2">&quot;AND&quot;</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">AND</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">items</span>
+
+        <span class="n">items</span> <span class="o">+=</span> <span class="n">SolrNode</span><span class="o">.</span><span class="n">build_items</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.sort_by"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.sort_by">[docs]</a>    <span class="k">def</span> <span class="nf">sort_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sort the SOLR documents</span>
+<span class="sd">        Usage:</span>
+<span class="sd">            ascending: sort_by(&quot;name&quot;)</span>
+<span class="sd">            descending: sort_by(&quot;-date&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;sort_str&quot;</span><span class="p">:</span> <span class="n">sort_str</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.group_by"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.group_by">[docs]</a>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_fields</span><span class="p">,</span> <span class="n">group_limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Group the SOLR documents</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;group_fields&quot;</span><span class="p">:</span> <span class="n">group_fields</span><span class="p">,</span>
+            <span class="s2">&quot;group_limit&quot;</span><span class="p">:</span> <span class="n">group_limit</span><span class="p">,</span>
+            <span class="s2">&quot;group_options&quot;</span><span class="p">:</span> <span class="n">kwargs</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.facet"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.facet">[docs]</a>    <span class="k">def</span> <span class="nf">facet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facet_fields</span><span class="p">,</span> <span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Facet the SOLR documents</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;facet_fields&quot;</span><span class="p">:</span> <span class="n">facet_fields</span><span class="p">,</span>
+            <span class="s2">&quot;mincount&quot;</span><span class="p">:</span> <span class="n">mincount</span><span class="p">,</span>
+            <span class="s2">&quot;facet_group&quot;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+            <span class="s2">&quot;facet_options&quot;</span><span class="p">:</span> <span class="n">kwargs</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.boost_by_func"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.boost_by_func">[docs]</a>    <span class="k">def</span> <span class="nf">boost_by_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost_func</span><span class="p">,</span> <span class="n">bf_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Boost query by function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;boost_func&quot;</span><span class="p">:</span> <span class="n">boost_func</span><span class="p">,</span>
+            <span class="s2">&quot;bf_weight&quot;</span><span class="p">:</span> <span class="n">bf_weight</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.boost_by_query"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.boost_by_query">[docs]</a>    <span class="k">def</span> <span class="nf">boost_by_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost_query</span><span class="p">,</span> <span class="n">bq_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Boost query by query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;boost_query&quot;</span><span class="p">:</span> <span class="n">boost_query</span><span class="p">,</span>
+            <span class="s2">&quot;bq_weight&quot;</span><span class="p">:</span> <span class="n">bq_weight</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.search"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">minimum_matches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">weights</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search SOLR by text query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;edismax&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;text_keywords&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">&quot;minimum_matches&quot;</span><span class="p">:</span> <span class="n">minimum_matches</span><span class="p">,</span>
+            <span class="s2">&quot;weight_dict&quot;</span><span class="p">:</span> <span class="n">weights</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.only"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.only">[docs]</a>    <span class="k">def</span> <span class="nf">only</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specify the returned fields in each document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;returned_fields&quot;</span><span class="p">:</span> <span class="n">args</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.limit"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specify the number of documents returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">rows</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.offset"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specify the offset of the entire documents</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+            <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">start</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct the query string to SOLR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">solr_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">parsed_solr_query</span>
+
+        <span class="k">if</span> <span class="n">solr_query</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">solr_query</span> <span class="o">=</span> <span class="s2">&quot;*:*&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span>
+            <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+            <span class="s2">&quot;wt&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edismax</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;defType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;edismax&#39;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;fq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">solr_query</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_keywords</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">query_string</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;\s+&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">text</span><span class="p">)])</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query_string</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">solr_query</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dict</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;qf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">^</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dict</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_dict</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_matches</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_matches</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returned_fields</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;fl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returned_fields</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_str</span><span class="p">:</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sort_field</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">sort_dir</span> <span class="o">=</span> <span class="s2">&quot;desc&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sort_field</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">sort_dir</span> <span class="o">=</span> <span class="s2">&quot;asc&quot;</span>
+
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sort_field</span><span class="p">,</span> <span class="n">sort_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_fields</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;on&quot;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;group.ngroups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;group.field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_fields</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;group.limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_limit</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">([</span>
+                <span class="p">(</span><span class="s2">&quot;group.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">group_options</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+            <span class="p">]))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">facet_fields</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;facet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;on&quot;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;facet.field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facet_fields</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;facet.mincount&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mincount</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">([</span>
+                <span class="p">(</span><span class="s2">&quot;facet.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">facet_options</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+            <span class="p">]))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost_func</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">^</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost_func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bf_weight</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost_query</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;bq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">^</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bq_weight</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span>
+
+<div class="viewcode-block" id="SolrQueryManager.get"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch one document from SOLR</span>
+
+<span class="sd">        :return: document from SOLR</span>
+<span class="sd">        :rtype: SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.create"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create one document in SOLR</span>
+
+<span class="sd">        :return: document created in SOLR</span>
+<span class="sd">        :rtype: SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">(</span>
+            <span class="n">field_weights</span><span class="o">=</span><span class="n">field_weights</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">__eq&quot;</span> <span class="o">%</span> <span class="n">doc</span><span class="o">.</span><span class="n">unique_key</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrDuplicateUniqueKeyError</span><span class="p">(</span>
+                <span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.update"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update one document in SOLR</span>
+
+<span class="sd">        :return: document created in SOLR</span>
+<span class="sd">        :rtype: SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">(</span>
+            <span class="n">partial_update</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">field_weights</span><span class="o">=</span><span class="n">field_weights</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">__eq&quot;</span> <span class="o">%</span> <span class="n">doc</span><span class="o">.</span><span class="n">unique_key</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()}</span>
+        <span class="n">solr_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">solr_doc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">solr_doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()</span> <span class="o">!=</span> \
+                <span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrDocumentNotExistError</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">())</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.raw"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.raw">[docs]</a>    <span class="k">def</span> <span class="nf">raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve matched documents from SOLR in json format</span>
+
+<span class="sd">        :return: documents from SOLR</span>
+<span class="sd">        :rtype: list of json</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.groups"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.groups">[docs]</a>    <span class="k">def</span> <span class="nf">groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve document groups when group is ON in the query</span>
+
+<span class="sd">        :return: document groups of SOLR documents</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">wukong.models</span> <span class="k">import</span> <span class="n">SolrDocs</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;groups&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.facets"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.facets">[docs]</a>    <span class="k">def</span> <span class="nf">facets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve document facets when facet is ON in the query</span>
+
+<span class="sd">        :return: facet counts of SOLR documents</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">wukong.models</span> <span class="k">import</span> <span class="n">SolrDocs</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">facets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;facets&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.all"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve all matched documents from SOLR and convert them into SolrDocs</span>
+
+<span class="sd">        :return: documents from SOLR</span>
+<span class="sd">        :rtype: list of SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">wukong.models</span> <span class="k">import</span> <span class="n">SolrDocs</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SolrDocs</span><span class="p">(</span><span class="n">docs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">from_json_docs</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;docs&#39;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="SolrQueryManager.one"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrQueryManager.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get one document from SOLR and convert it into SolrDoc</span>
+
+<span class="sd">        :return: one document from SOLR</span>
+<span class="sd">        :rtype: SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_query_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">new_query_manager</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;docs&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">(</span><span class="o">**</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;docs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, SurveyMonkey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>wukong.models &mdash; wukong 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="wukong 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> wukong
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">wukong</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>wukong.models</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for wukong.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">wukong.api</span> <span class="k">import</span> <span class="n">SolrAPI</span>
+<span class="kn">from</span> <span class="nn">wukong.query</span> <span class="k">import</span> <span class="n">SolrQueryManager</span>
+<span class="kn">import</span> <span class="nn">wukong.errors</span> <span class="k">as</span> <span class="nn">solr_errors</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="SolrDocMetaClass"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDocMetaClass">[docs]</a><span class="k">class</span> <span class="nc">SolrDocMetaClass</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Meta class for SolrDoc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">solr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a instance of SOLR api class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_solr&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_solr</span> <span class="o">=</span> <span class="n">SolrAPI</span><span class="p">(</span>
+                <span class="n">solr_hosts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solr_hosts</span><span class="p">,</span>
+                <span class="n">solr_collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                <span class="n">zookeeper_hosts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zookeeper_hosts</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request_timeout</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solr</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a instance of SOLR Query Manager class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SolrQueryManager</span><span class="p">(</span><span class="n">doc_class</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unique_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the unique key of the collection schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uniqueKey&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the current collection schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_schema&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">get_schema</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span></div>
+
+
+<div class="viewcode-block" id="SolrDocs"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDocs">[docs]</a><span class="k">class</span> <span class="nc">SolrDocs</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Wrapper Container for a collection of SolrDoc</span>
+<span class="sd">    instances, designed for batch update and delete</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span> <span class="ow">or</span> <span class="p">[]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(len(</span><span class="si">%s</span><span class="s1">)=</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">__name__</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span> <span class="k">else</span> <span class="s2">&quot;doc&quot;</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">doc</span>
+
+<div class="viewcode-block" id="SolrDocs.add"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDocs.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a document to the SolrDoc container</span>
+
+<span class="sd">        :param doc: the document to add</span>
+<span class="sd">        :type doc: SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">__class__</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrError</span><span class="p">(</span>
+                    <span class="s2">&quot;The types of documents in a &quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;container should be the same&quot;</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">__class__</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrDocs.index"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDocs.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Index all current documents in the container to SOLR collection</span>
+
+<span class="sd">        :param commit: whether or not to commit to SOLR when submitted</span>
+<span class="sd">        :type commit: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">get_data_for_solr</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">commit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SolrDocs.delete"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDocs.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Index all current documents in the container to SOLR collection</span>
+
+<span class="sd">        :param commit: whether or not to commit to SOLR when submitted</span>
+<span class="sd">        :type commit: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">unique_keys_str</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">())</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc_class</span><span class="o">.</span><span class="n">unique_key</span><span class="p">,</span>
+            <span class="n">unique_keys_str</span><span class="p">,</span>
+            <span class="n">commit</span><span class="o">=</span><span class="n">commit</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SolrDoc"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc">[docs]</a><span class="k">class</span> <span class="nc">SolrDoc</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The base class for modeling any type of solr document</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">solr_hosts</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">zookeeper_hosts</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">request_timeout</span> <span class="o">=</span> <span class="mi">15</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">SolrDocMetaClass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">solr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference the property from the metaclass and</span>
+<span class="sd">        return a instance of SOLR api class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">solr</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference the property from the metaclass and</span>
+<span class="sd">        return a instance of SOLR Query Manager class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">documents</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unique_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference the property from the metaclass and</span>
+<span class="sd">        return the unique key of the collection schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">unique_key</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference the property from the metaclass and</span>
+<span class="sd">        return the current collection schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">schema</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partial_update</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">field_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param partial_update: whether or not only the provided</span>
+<span class="sd">            fields should be updated, otherwise, the entire</span>
+<span class="sd">            document will be overridden.</span>
+<span class="sd">        :type partial_update: boolean</span>
+
+<span class="sd">        :param field_weights: the weights for different fields for boosting</span>
+<span class="sd">        :type field_weights: dict</span>
+
+<span class="sd">        :param kwargs: the dictionary of key value mapping</span>
+<span class="sd">            for fields of the document</span>
+<span class="sd">        :param kwargs: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_update</span> <span class="o">=</span> <span class="n">partial_update</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span> <span class="o">=</span> <span class="n">field_weights</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_fields</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_schema_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SolrDoc.add_schema_fields"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.add_schema_fields">[docs]</a>    <span class="k">def</span> <span class="nf">add_schema_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add fields to the SOLR schema which will hit the SOLR schema api.</span>
+
+<span class="sd">        :param fields: a list of field meta info (e.g. name, type)</span>
+<span class="sd">        :type fields: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schema_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]]</span>
+
+        <span class="n">added_fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema_fields</span><span class="p">:</span>
+                <span class="n">added_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">add_schema_fields</span><span class="p">(</span><span class="n">added_fields</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SolrDoc.from_json_docs"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.from_json_docs">[docs]</a>    <span class="k">def</span> <span class="nf">from_json_docs</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">json_docs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a list of json dict from SOLR to a list of SolrDoc.</span>
+
+<span class="sd">        :param json_docs: a list of dict returned from SOLR server</span>
+<span class="sd">        :type json_docs: list</span>
+
+<span class="sd">        :return: a list of SolrDoc</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">json_docs</span><span class="p">:</span>
+            <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">doc</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">docs</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">=</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_key</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare two SOLR documents</span>
+
+<span class="sd">        :param other: the other doc to compare</span>
+<span class="sd">        :type other: SolrDoc</span>
+
+<span class="sd">        :return: whether or not the fields of the two docs are the same</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fields</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare two SOLR documents</span>
+
+<span class="sd">        :param other: the other doc to compare</span>
+<span class="sd">        :type other: SolrDoc</span>
+
+<span class="sd">        :return: whether or not the fields of the two docs are different</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">fields</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SolrDoc.get_unique_field"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.get_unique_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the value of the unique key in the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrDoc.set_fields"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.set_fields">[docs]</a>    <span class="k">def</span> <span class="nf">set_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the values for all fields in the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="c1"># if the data is from SOLR, we don&#39;t want &#39;_version_&#39;</span>
+            <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">field</span> <span class="o">!=</span> <span class="s1">&#39;_version_&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SolrDoc.get_field"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.get_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the value of an field from the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrDoc.set_field"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.set_field">[docs]</a>    <span class="k">def</span> <span class="nf">set_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the value of an field from the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="SolrDoc.del_field"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.del_field">[docs]</a>    <span class="k">def</span> <span class="nf">del_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the value of an field from the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_key</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrDeleteUniqueKeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SolrDoc.is_partial_update"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.is_partial_update">[docs]</a>    <span class="k">def</span> <span class="nf">is_partial_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return if the SolrDoc is only for partial update</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_update</span></div>
+
+<div class="viewcode-block" id="SolrDoc.set_partial_update"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.set_partial_update">[docs]</a>    <span class="k">def</span> <span class="nf">set_partial_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the value of partial update</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_update</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrDoc.set_field_weight"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.set_field_weight">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the weight of an field from the SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight</span></div>
+
+<div class="viewcode-block" id="SolrDoc.get_field_weight"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.get_field_weight">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the weight of an field from a SolrDoc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_weights</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SolrDoc.validate_schema_fields"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.validate_schema_fields">[docs]</a>    <span class="k">def</span> <span class="nf">validate_schema_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate if the fields are valid for SOLR by checking with the schema</span>
+
+<span class="sd">        :param fields: a list of dicts for the field meta info</span>
+<span class="sd">        :type fields: list</span>
+
+<span class="sd">        :return: whether or not the fields are consistent with SOLR schema</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">schema_fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span>
+                              <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="p">{})])</span>
+
+        <span class="n">dynamic_fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span>
+                               <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dynamicFields&quot;</span><span class="p">,</span> <span class="p">{})])</span>
+
+        <span class="n">pk</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">unique_key</span>
+
+        <span class="k">if</span> <span class="n">pk</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fields</span> <span class="ow">or</span> <span class="n">fields</span><span class="p">[</span><span class="n">pk</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrSchemaValidationError</span><span class="p">(</span>
+                <span class="n">pk</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unique key is not specified&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">schema_fields</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">schema_fields</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multiValued&quot;</span><span class="p">)</span> <span class="ow">and</span> \
+                        <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrSchemaValidationError</span><span class="p">(</span>
+                        <span class="n">key</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not list type&quot;</span> <span class="o">%</span> <span class="n">key</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dynamic_fields</span><span class="p">:</span>
+                    <span class="n">df_re</span> <span class="o">=</span> <span class="s2">&quot;^</span><span class="si">%s</span><span class="s2">$&quot;</span> <span class="o">%</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;.*&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">df_re</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">solr_errors</span><span class="o">.</span><span class="n">SolrSchemaValidationError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SolrDoc.get_data_for_solr"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.get_data_for_solr">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_for_solr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the data for SOLR indexing for the current SolrDoc.</span>
+
+<span class="sd">        :return: a json representation of a SolrDoc for SOLR indexing.</span>
+<span class="sd">            If the SolrDoc is invalid, it returns None.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_schema_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+
+        <span class="n">solr_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_partial_update</span><span class="p">()</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_key</span><span class="p">:</span>
+                <span class="c1"># {&quot;set&quot;: self.get_attr(key)} is for partial update in SOLR</span>
+                <span class="c1"># if &quot;set&quot; is not used, the entire entity in SOLR will be</span>
+                <span class="c1"># replaced</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;set&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+
+            <span class="c1"># boost is to adjust the weight of a specific field for</span>
+            <span class="c1"># that SolrDoc</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_weight</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                    <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_weight</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="p">}</span>
+
+            <span class="n">solr_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">solr_data</span></div>
+
+<div class="viewcode-block" id="SolrDoc.index"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Index the current SolrDoc from SOLR.</span>
+
+<span class="sd">        :param commit: whether or not to commit upon submission.</span>
+<span class="sd">        :type commit: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">solr_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_for_solr</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">update</span><span class="p">([</span><span class="n">solr_doc</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">commit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SolrDoc.delete"><a class="viewcode-back" href="../../apidoc/wukong.html#wukong.models.SolrDoc.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the current SolrDoc from SOLR.</span>
+
+<span class="sd">        :param commit: whether or not to commit upon submission.</span>
+<span class="sd">        :type commit: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unique_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_key</span>
+        <span class="n">unique_key_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unique_field</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">unique_key</span><span class="p">,</span> <span class="n">unique_key_value</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, SurveyMonkey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

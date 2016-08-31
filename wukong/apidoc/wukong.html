@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Wukong package &mdash; wukong 0.0.1 documentation</title>
+  <title>wukong package &mdash; wukong 0.0.1 documentation</title>
   
 
   
@@ -81,15 +81,15 @@
             
                 <!-- Local TOC -->
                 <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Wukong package</a><ul>
+<li><a class="reference internal" href="#">wukong package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#wukong-api-module">Wukong.api module</a></li>
-<li><a class="reference internal" href="#wukong-errors-module">Wukong.errors module</a></li>
-<li><a class="reference internal" href="#wukong-models-module">Wukong.models module</a></li>
-<li><a class="reference internal" href="#wukong-query-module">Wukong.query module</a></li>
-<li><a class="reference internal" href="#wukong-request-module">Wukong.request module</a></li>
-<li><a class="reference internal" href="#wukong-zookeeper-module">Wukong.zookeeper module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-wukong.api">wukong.api module</a></li>
+<li><a class="reference internal" href="#module-wukong.errors">wukong.errors module</a></li>
+<li><a class="reference internal" href="#module-wukong.models">wukong.models module</a></li>
+<li><a class="reference internal" href="#module-wukong.query">wukong.query module</a></li>
+<li><a class="reference internal" href="#module-wukong.request">wukong.request module</a></li>
+<li><a class="reference internal" href="#module-wukong.zookeeper">wukong.zookeeper module</a></li>
+<li><a class="reference internal" href="#module-wukong">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +122,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Wukong package</li>
+    <li>wukong package</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/apidoc/Wukong.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/apidoc/wukong.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -137,30 +137,831 @@
            <div itemprop="articleBody">
             
   <div class="section" id="wukong-package">
-<h1>Wukong package<a class="headerlink" href="#wukong-package" title="Permalink to this headline">¶</a></h1>
+<h1>wukong package<a class="headerlink" href="#wukong-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="wukong-api-module">
-<h2>Wukong.api module<a class="headerlink" href="#wukong-api-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.api">
+<span id="wukong-api-module"></span><h2>wukong.api module<a class="headerlink" href="#module-wukong.api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wukong.api.SolrAPI">
+<em class="property">class </em><code class="descclassname">wukong.api.</code><code class="descname">SolrAPI</code><span class="sig-paren">(</span><em>solr_hosts</em>, <em>solr_collection</em>, <em>zookeeper_hosts=None</em>, <em>timeout=15</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="wukong.api.SolrAPI.add_schema_fields">
+<code class="descname">add_schema_fields</code><span class="sig-paren">(</span><em>fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.add_schema_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.add_schema_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new fields to the schema of current collection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of dicts of fields.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.commit">
+<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hard commit documents to SOLR.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>unique_key</em>, <em>unique_key_value</em>, <em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deleting a document from SOLR.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>unique_key</strong> &#8211; the unique key for the doc to delete</li>
+<li><strong>unique_key_value</strong> &#8211; the value for the unique_key</li>
+<li><strong>commit</strong> &#8211; whether or not we should commit the documents.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.get_schema">
+<code class="descname">get_schema</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.get_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the SOLR schema for the solr collection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the schema for the current collection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.is_alive">
+<code class="descname">is_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.is_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if current collection is live from zookeeper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">weather or not if the collection is live</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.select">
+<code class="descname">select</code><span class="sig-paren">(</span><em>query_dict</em>, <em>groups=False</em>, <em>facets=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query documents from SOLR.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>query_dict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; a dict containing the query params to SOLR</li>
+<li><strong>metadata</strong> (<em>boolean</em>) &#8211; whether or not solr metadata should be returned</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; a dict of additional params for SOLR</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">reformatted response from SOLR</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.api.SolrAPI.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>docs</em>, <em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/api.html#SolrAPI.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.api.SolrAPI.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new docs or updating existing docs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>docs</strong> &#8211; a list of instances of SolrDoc.</li>
+<li><strong>commit</strong> &#8211; whether or not we should commit the documents.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="wukong-errors-module">
-<h2>Wukong.errors module<a class="headerlink" href="#wukong-errors-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.errors">
+<span id="wukong-errors-module"></span><h2>wukong.errors module<a class="headerlink" href="#module-wukong.errors" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="wukong.errors.SolrDeleteUniqueKeyError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrDeleteUniqueKeyError</code><span class="sig-paren">(</span><em>pk</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrDeleteUniqueKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrDeleteUniqueKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrDocumentNotExistError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrDocumentNotExistError</code><span class="sig-paren">(</span><em>pk</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrDocumentNotExistError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrDocumentNotExistError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrDuplicateUniqueKeyError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrDuplicateUniqueKeyError</code><span class="sig-paren">(</span><em>pk</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrDuplicateUniqueKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrDuplicateUniqueKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrError</code><span class="sig-paren">(</span><em>message=None</em>, <em>status_code=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrSchemaUpdateError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrSchemaUpdateError</code><span class="sig-paren">(</span><em>fields</em>, <em>message=None</em>, <em>status_code=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrSchemaUpdateError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrSchemaUpdateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrSchemaValidationError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrSchemaValidationError</code><span class="sig-paren">(</span><em>field</em>, <em>message=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrSchemaValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrSchemaValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrUnspecifiedOperatorError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrUnspecifiedOperatorError</code><span class="sig-paren">(</span><em>field_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrUnspecifiedOperatorError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrUnspecifiedOperatorError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="wukong.errors.SolrUnspportedOperatorError">
+<em class="property">exception </em><code class="descclassname">wukong.errors.</code><code class="descname">SolrUnspportedOperatorError</code><span class="sig-paren">(</span><em>operator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/errors.html#SolrUnspportedOperatorError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.errors.SolrUnspportedOperatorError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.errors.SolrError" title="wukong.errors.SolrError"><code class="xref py py-class docutils literal"><span class="pre">wukong.errors.SolrError</span></code></a></p>
+</dd></dl>
+
 </div>
-<div class="section" id="wukong-models-module">
-<h2>Wukong.models module<a class="headerlink" href="#wukong-models-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.models">
+<span id="wukong-models-module"></span><h2>wukong.models module<a class="headerlink" href="#module-wukong.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wukong.models.SolrDoc">
+<em class="property">class </em><code class="descclassname">wukong.models.</code><code class="descname">SolrDoc</code><span class="sig-paren">(</span><em>partial_update=False</em>, <em>field_weights=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The base class for modeling any type of solr document</p>
+<dl class="classmethod">
+<dt id="wukong.models.SolrDoc.add_schema_fields">
+<em class="property">classmethod </em><code class="descname">add_schema_fields</code><span class="sig-paren">(</span><em>fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.add_schema_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.add_schema_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add fields to the SOLR schema which will hit the SOLR schema api.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of field meta info (e.g. name, type)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.collection_name">
+<code class="descname">collection_name</code><em class="property"> = None</em><a class="headerlink" href="#wukong.models.SolrDoc.collection_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.del_field">
+<code class="descname">del_field</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.del_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.del_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the value of an field from the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the current SolrDoc from SOLR.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<em>boolean</em>) &#8211; whether or not to commit upon submission.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.documents">
+<code class="descname">documents</code><em class="property"> = &lt;wukong.query.SolrQueryManager object&gt;</em><a class="headerlink" href="#wukong.models.SolrDoc.documents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="wukong.models.SolrDoc.from_json_docs">
+<em class="property">classmethod </em><code class="descname">from_json_docs</code><span class="sig-paren">(</span><em>json_docs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.from_json_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.from_json_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of json dict from SOLR to a list of SolrDoc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>json_docs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of dict returned from SOLR server</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of SolrDoc</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.get_data_for_solr">
+<code class="descname">get_data_for_solr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.get_data_for_solr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.get_data_for_solr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the data for SOLR indexing for the current SolrDoc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a json representation of a SolrDoc for SOLR indexing.
+If the SolrDoc is invalid, it returns None.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.get_field">
+<code class="descname">get_field</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.get_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.get_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of an field from the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.get_field_weight">
+<code class="descname">get_field_weight</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.get_field_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.get_field_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weight of an field from a SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.get_unique_field">
+<code class="descname">get_unique_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.get_unique_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.get_unique_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the unique key in the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.index">
+<code class="descname">index</code><span class="sig-paren">(</span><em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index the current SolrDoc from SOLR.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<em>boolean</em>) &#8211; whether or not to commit upon submission.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.is_partial_update">
+<code class="descname">is_partial_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.is_partial_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.is_partial_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if the SolrDoc is only for partial update</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.request_timeout">
+<code class="descname">request_timeout</code><em class="property"> = 15</em><a class="headerlink" href="#wukong.models.SolrDoc.request_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.schema">
+<code class="descname">schema</code><a class="headerlink" href="#wukong.models.SolrDoc.schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference the property from the metaclass and
+return the current collection schema</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.set_field">
+<code class="descname">set_field</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.set_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.set_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value of an field from the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.set_field_weight">
+<code class="descname">set_field_weight</code><span class="sig-paren">(</span><em>field</em>, <em>weight</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.set_field_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.set_field_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the weight of an field from the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.set_fields">
+<code class="descname">set_fields</code><span class="sig-paren">(</span><em>**fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.set_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.set_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the values for all fields in the SolrDoc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDoc.set_partial_update">
+<code class="descname">set_partial_update</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.set_partial_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.set_partial_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value of partial update</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.solr">
+<code class="descname">solr</code><a class="headerlink" href="#wukong.models.SolrDoc.solr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference the property from the metaclass and
+return a instance of SOLR api class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.solr_hosts">
+<code class="descname">solr_hosts</code><em class="property"> = None</em><a class="headerlink" href="#wukong.models.SolrDoc.solr_hosts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.unique_key">
+<code class="descname">unique_key</code><a class="headerlink" href="#wukong.models.SolrDoc.unique_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference the property from the metaclass and
+return the unique key of the collection schema</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="wukong.models.SolrDoc.validate_schema_fields">
+<em class="property">classmethod </em><code class="descname">validate_schema_fields</code><span class="sig-paren">(</span><em>fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDoc.validate_schema_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDoc.validate_schema_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate if the fields are valid for SOLR by checking with the schema</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of dicts for the field meta info</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">whether or not the fields are consistent with SOLR schema</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDoc.zookeeper_hosts">
+<code class="descname">zookeeper_hosts</code><em class="property"> = None</em><a class="headerlink" href="#wukong.models.SolrDoc.zookeeper_hosts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.models.SolrDocMetaClass">
+<em class="property">class </em><code class="descclassname">wukong.models.</code><code class="descname">SolrDocMetaClass</code><a class="reference internal" href="../_modules/wukong/models.html#SolrDocMetaClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDocMetaClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">type</span></code></a></p>
+<p>Meta class for SolrDoc</p>
+<dl class="attribute">
+<dt id="wukong.models.SolrDocMetaClass.documents">
+<code class="descname">documents</code><a class="headerlink" href="#wukong.models.SolrDocMetaClass.documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a instance of SOLR Query Manager class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDocMetaClass.schema">
+<code class="descname">schema</code><a class="headerlink" href="#wukong.models.SolrDocMetaClass.schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current collection schema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDocMetaClass.solr">
+<code class="descname">solr</code><a class="headerlink" href="#wukong.models.SolrDocMetaClass.solr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a instance of SOLR api class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.models.SolrDocMetaClass.unique_key">
+<code class="descname">unique_key</code><a class="headerlink" href="#wukong.models.SolrDocMetaClass.unique_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the unique key of the collection schema</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.models.SolrDocs">
+<em class="property">class </em><code class="descclassname">wukong.models.</code><code class="descname">SolrDocs</code><span class="sig-paren">(</span><em>docs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDocs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDocs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A Wrapper Container for a collection of SolrDoc
+instances, designed for batch update and delete</p>
+<dl class="method">
+<dt id="wukong.models.SolrDocs.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDocs.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDocs.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a document to the SolrDoc container</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> (<a class="reference internal" href="#wukong.models.SolrDoc" title="wukong.models.SolrDoc"><em>SolrDoc</em></a>) &#8211; the document to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDocs.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDocs.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDocs.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index all current documents in the container to SOLR collection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<em>boolean</em>) &#8211; whether or not to commit to SOLR when submitted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.models.SolrDocs.index">
+<code class="descname">index</code><span class="sig-paren">(</span><em>commit=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/models.html#SolrDocs.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.models.SolrDocs.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index all current documents in the container to SOLR collection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<em>boolean</em>) &#8211; whether or not to commit to SOLR when submitted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="wukong-query-module">
-<h2>Wukong.query module<a class="headerlink" href="#wukong-query-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.query">
+<span id="wukong-query-module"></span><h2>wukong.query module<a class="headerlink" href="#module-wukong.query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wukong.query.AND">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">AND</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#AND"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.AND" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.query.SolrNode" title="wukong.query.SolrNode"><code class="xref py py-class docutils literal"><span class="pre">wukong.query.SolrNode</span></code></a></p>
+<p>Model the AND logic in SOLR query</p>
+<dl class="attribute">
+<dt id="wukong.query.AND.logic">
+<code class="descname">logic</code><em class="property"> = 'AND'</em><a class="headerlink" href="#wukong.query.AND.logic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.AND.parsed_solr_query">
+<code class="descname">parsed_solr_query</code><a class="headerlink" href="#wukong.query.AND.parsed_solr_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.query.Comparator">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">Comparator</code><span class="sig-paren">(</span><em>operator</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#Comparator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.Comparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.query.SolrNode" title="wukong.query.SolrNode"><code class="xref py py-class docutils literal"><span class="pre">wukong.query.SolrNode</span></code></a></p>
+<p>Model the compare logic in SOLR query</p>
+<dl class="attribute">
+<dt id="wukong.query.Comparator.logic">
+<code class="descname">logic</code><em class="property"> = 'COMP'</em><a class="headerlink" href="#wukong.query.Comparator.logic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.Comparator.parsed_solr_query">
+<code class="descname">parsed_solr_query</code><a class="headerlink" href="#wukong.query.Comparator.parsed_solr_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.query.NOT">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">NOT</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#NOT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.NOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.query.SolrNode" title="wukong.query.SolrNode"><code class="xref py py-class docutils literal"><span class="pre">wukong.query.SolrNode</span></code></a></p>
+<p>Model the NOT logic in SOLR query</p>
+<dl class="attribute">
+<dt id="wukong.query.NOT.logic">
+<code class="descname">logic</code><em class="property"> = 'NOT'</em><a class="headerlink" href="#wukong.query.NOT.logic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.NOT.parsed_solr_query">
+<code class="descname">parsed_solr_query</code><a class="headerlink" href="#wukong.query.NOT.parsed_solr_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.query.OR">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">OR</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#OR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.OR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wukong.query.SolrNode" title="wukong.query.SolrNode"><code class="xref py py-class docutils literal"><span class="pre">wukong.query.SolrNode</span></code></a></p>
+<p>Model the OR logic in SOLR query</p>
+<dl class="attribute">
+<dt id="wukong.query.OR.logic">
+<code class="descname">logic</code><em class="property"> = 'OR'</em><a class="headerlink" href="#wukong.query.OR.logic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.OR.parsed_solr_query">
+<code class="descname">parsed_solr_query</code><a class="headerlink" href="#wukong.query.OR.parsed_solr_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.query.SolrNode">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">SolrNode</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The base class to model a tree node in the query logic to SOLR</p>
+<dl class="classmethod">
+<dt id="wukong.query.SolrNode.build_items">
+<em class="property">classmethod </em><code class="descname">build_items</code><span class="sig-paren">(</span><em>args</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrNode.build_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrNode.build_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a list of items under the current logic operator</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.SolrNode.parsed_solr_query">
+<code class="descname">parsed_solr_query</code><a class="headerlink" href="#wukong.query.SolrNode.parsed_solr_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the current node to a query string</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="wukong.query.SolrQueryManager">
+<em class="property">class </em><code class="descclassname">wukong.query.</code><code class="descname">SolrQueryManager</code><span class="sig-paren">(</span><em>doc_class</em>, <em>node=None</em>, <em>sort_str=None</em>, <em>weight_dict=None</em>, <em>returned_fields=None</em>, <em>edismax=False</em>, <em>rows=999999999</em>, <em>start=0</em>, <em>facet_fields=None</em>, <em>facet_options={}</em>, <em>mincount=1</em>, <em>facet_group=True</em>, <em>group_fields=None</em>, <em>group_limit=0</em>, <em>group_options={}</em>, <em>boost_func=None</em>, <em>bf_weight=1</em>, <em>boost_query=None</em>, <em>bq_weight=1</em>, <em>minimum_matches=None</em>, <em>text_keywords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A class to chain different query methods for SOLR
+and construct the final query to SOLR</p>
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all matched documents from SOLR and convert them into SolrDocs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">documents from SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of SolrDoc</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.boost_by_func">
+<code class="descname">boost_by_func</code><span class="sig-paren">(</span><em>boost_func</em>, <em>bf_weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.boost_by_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.boost_by_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boost query by function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.boost_by_query">
+<code class="descname">boost_by_query</code><span class="sig-paren">(</span><em>boost_query</em>, <em>bq_weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.boost_by_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.boost_by_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boost query by query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>field_weights=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create one document in SOLR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">document created in SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#wukong.models.SolrDoc" title="wukong.models.SolrDoc">SolrDoc</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.facet">
+<code class="descname">facet</code><span class="sig-paren">(</span><em>facet_fields</em>, <em>mincount=1</em>, <em>group=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.facet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.facet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Facet the SOLR documents</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.facets">
+<code class="descname">facets</code><span class="sig-paren">(</span><em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.facets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.facets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve document facets when facet is ON in the query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">facet counts of SOLR documents</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.filter">
+<code class="descname">filter</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the SOLR documents by mathmatical and logical operators.
+Usage:</p>
+<blockquote>
+<div><p>filter(name__eq=&#8221;Test Name&#8221;)
+filter(name__eq=&#8221;Test Name&#8221;, city__wc=&#8221;Test*&#8221;)
+filter(OR(name__eq=&#8221;Test Name&#8221;, city__wc=&#8221;Test*&#8221;),</p>
+<blockquote>
+<div>population__ge=300000)</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch one document from SOLR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">document from SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#wukong.models.SolrDoc" title="wukong.models.SolrDoc">SolrDoc</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.group_by">
+<code class="descname">group_by</code><span class="sig-paren">(</span><em>group_fields</em>, <em>group_limit=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.group_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.group_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group the SOLR documents</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.groups">
+<code class="descname">groups</code><span class="sig-paren">(</span><em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve document groups when group is ON in the query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">document groups of SOLR documents</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.limit">
+<code class="descname">limit</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the number of documents returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.offset">
+<code class="descname">offset</code><span class="sig-paren">(</span><em>start</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the offset of the entire documents</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.one">
+<code class="descname">one</code><span class="sig-paren">(</span><em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one document from SOLR and convert it into SolrDoc</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">one document from SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#wukong.models.SolrDoc" title="wukong.models.SolrDoc">SolrDoc</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.only">
+<code class="descname">only</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.only"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the returned fields in each document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="wukong.query.SolrQueryManager.query">
+<code class="descname">query</code><a class="headerlink" href="#wukong.query.SolrQueryManager.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct the query string to SOLR</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.raw">
+<code class="descname">raw</code><span class="sig-paren">(</span><em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve matched documents from SOLR in json format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">documents from SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of json</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>text</em>, <em>minimum_matches=None</em>, <em>**weights</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search SOLR by text query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.sort_by">
+<code class="descname">sort_by</code><span class="sig-paren">(</span><em>sort_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.sort_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.sort_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the SOLR documents
+Usage:</p>
+<blockquote>
+<div>ascending: sort_by(&#8220;name&#8221;)
+descending: sort_by(&#8220;-date&#8221;)</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the json representation of the query manager</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.query.SolrQueryManager.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>field_weights=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/query.html#SolrQueryManager.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.query.SolrQueryManager.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update one document in SOLR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">document created in SOLR</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#wukong.models.SolrDoc" title="wukong.models.SolrDoc">SolrDoc</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="wukong-request-module">
-<h2>Wukong.request module<a class="headerlink" href="#wukong-request-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.request">
+<span id="wukong-request-module"></span><h2>wukong.request module<a class="headerlink" href="#module-wukong.request" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wukong.request.SolrRequest">
+<em class="property">class </em><code class="descclassname">wukong.request.</code><code class="descname">SolrRequest</code><span class="sig-paren">(</span><em>solr_hosts</em>, <em>zookeeper_hosts=None</em>, <em>timeout=15</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/request.html#SolrRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.request.SolrRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Handle requests to SOLR and response from SOLR</p>
+<dl class="method">
+<dt id="wukong.request.SolrRequest.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em>, <em>params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/request.html#SolrRequest.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.request.SolrRequest.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a GET request to the SOLR servers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.request.SolrRequest.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>path</em>, <em>params=None</em>, <em>body=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/request.html#SolrRequest.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.request.SolrRequest.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a POST request to the SOLR servers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="wukong.request.SolrRequest.request">
+<code class="descname">request</code><span class="sig-paren">(</span><em>path</em>, <em>params</em>, <em>method</em>, <em>body=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/request.html#SolrRequest.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.request.SolrRequest.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare data and send request to SOLR servers</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="wukong.request.process_response">
+<code class="descclassname">wukong.request.</code><code class="descname">process_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/request.html#process_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.request.process_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="wukong-zookeeper-module">
-<h2>Wukong.zookeeper module<a class="headerlink" href="#wukong-zookeeper-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong.zookeeper">
+<span id="wukong-zookeeper-module"></span><h2>wukong.zookeeper module<a class="headerlink" href="#module-wukong.zookeeper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="wukong.zookeeper.Zookeeper">
+<em class="property">class </em><code class="descclassname">wukong.zookeeper.</code><code class="descname">Zookeeper</code><span class="sig-paren">(</span><em>hosts</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/zookeeper.html#Zookeeper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.zookeeper.Zookeeper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Retrieve the status of SOLR servers from Zookeeper</p>
+<dl class="method">
+<dt id="wukong.zookeeper.Zookeeper.get_active_hosts">
+<code class="descname">get_active_hosts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wukong/zookeeper.html#Zookeeper.get_active_hosts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wukong.zookeeper.Zookeeper.get_active_hosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current active SOLR hosts from Zookeeper</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-wukong">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wukong" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
