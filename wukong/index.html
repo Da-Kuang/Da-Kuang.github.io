@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>wukong documentation &mdash; wukong 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="wukong 0.0.1 documentation" href="#"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> wukong
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">wukong documentation</a><ul>
+<li><a class="reference internal" href="#get-started">Get Started</a><ul>
+<li><a class="reference internal" href="#define-your-document-class">Define your document class</a></li>
+<li><a class="reference internal" href="#fetch-documents">Fetch documents</a></li>
+<li><a class="reference internal" href="#update-documents">Update documents</a></li>
+<li><a class="reference internal" href="#delete-documents">Delete documents</a></li>
+<li><a class="reference internal" href="#create-documents">Create documents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentations">Documentations</a><ul>
+<li><a class="reference internal" href="#solr-document-class">Solr Document Class</a></li>
+<li><a class="reference internal" href="#documents-retrieval">Documents Retrieval</a><ul>
+<li><a class="reference internal" href="#filtering">Filtering</a></li>
+<li><a class="reference internal" href="#sorting">Sorting</a></li>
+<li><a class="reference internal" href="#search">Search</a></li>
+<li><a class="reference internal" href="#grouping">Grouping</a></li>
+<li><a class="reference internal" href="#faceting">Faceting</a></li>
+<li><a class="reference internal" href="#pagination">Pagination</a></li>
+<li><a class="reference internal" href="#return-fields">Return Fields</a></li>
+<li><a class="reference internal" href="#raw-documents">Raw Documents</a></li>
+<li><a class="reference internal" href="#chained-query">Chained Query</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#document-creation">Document Creation</a></li>
+<li><a class="reference internal" href="#document-update">Document Update</a></li>
+<li><a class="reference internal" href="#document-delete">Document Delete</a></li>
+<li><a class="reference internal" href="#complex-query">Complex Query</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modules">Modules</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">wukong</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>wukong documentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wukong-documentation">
+<h1>wukong documentation<a class="headerlink" href="#wukong-documentation" title="Permalink to this headline">¶</a></h1>
+<p>wukong offers an ORM query engine for Solr and Solr Cloud.</p>
+<div class="section" id="get-started">
+<h2>Get Started<a class="headerlink" href="#get-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="define-your-document-class">
+<h3>Define your document class<a class="headerlink" href="#define-your-document-class" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wukong.models</span> <span class="kn">import</span> <span class="n">SolrDoc</span>
+
+<span class="n">Class</span> <span class="n">YourDocClass</span><span class="p">(</span><span class="n">SolrDoc</span><span class="p">):</span>
+    <span class="n">solr_hosts</span> <span class="o">=</span> <span class="s2">&quot;localhost:8080&quot;</span>
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="s2">&quot;my_solr_collection&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fetch-documents">
+<h3>Fetch documents<a class="headerlink" href="#fetch-documents" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">YourDocClass</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">firstname__eq</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="update-documents">
+<h3>Update documents<a class="headerlink" href="#update-documents" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstname</span> <span class="o">=</span> <span class="s2">&quot;Jim&quot;</span>
+<span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">()</span> <span class="c1"># single update</span>
+
+<span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">firstname</span> <span class="o">=</span> <span class="s2">&quot;Smith&quot;</span>
+<span class="n">docs</span><span class="o">.</span><span class="n">index</span><span class="p">()</span> <span class="c1"># batch update</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-documents">
+<h3>Delete documents<a class="headerlink" href="#delete-documents" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span> <span class="c1"># single delete</span>
+<span class="n">docs</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span> <span class="c1"># batch delete</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-documents">
+<h3>Create documents<a class="headerlink" href="#create-documents" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">YourDocClass</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstname__eq</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">,</span> <span class="n">lastname__eq</span><span class="o">=</span><span class="s2">&quot;bond&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="documentations">
+<h2>Documentations<a class="headerlink" href="#documentations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="solr-document-class">
+<h3>Solr Document Class<a class="headerlink" href="#solr-document-class" title="Permalink to this headline">¶</a></h3>
+<p>In order to connect to your Solr collection, we can just extend a base class called <cite>SolrDoc</cite>. You can specify four attributes in your class.</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>solr_hosts</cite>: the host name(s) for your Solr servers.</li>
+<li><cite>zookeeper_hosts</cite>: the host name(s) for your Zookeeper hosts which monitor Solr. (optional)</li>
+<li><cite>collection_name</cite>: the collection name for your collection in Solr.</li>
+<li><cite>request_timeout</cite>: in how many seconds to drop the request to Solr. (optional, defaults to 15)</li>
+</ul>
+</div></blockquote>
+<p>For example, if you have a collection named <cite>User</cite>, you can do the following.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wukong.models</span> <span class="kn">import</span> <span class="n">SolrDoc</span>
+
+<span class="n">Class</span> <span class="n">User</span><span class="p">(</span><span class="n">SolrDoc</span><span class="p">):</span>
+    <span class="n">solr_hosts</span> <span class="o">=</span> <span class="s2">&quot;localhost:8080&quot;</span>
+    <span class="n">zookeeper_hosts</span> <span class="o">=</span> <span class="s2">&quot;localhost:2181&quot;</span>
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+<span class="k">def</span> <span class="nf">validate_schema_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">get_data_for_solr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>You can overide existing methods to fit your business logic, like <cite>validate_schema_fields</cite>, <cite>get_data_for_solr</cite>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>validate_schema_fields</cite>: return boolean to validate if the current document is consistent with the Solr Schema</li>
+<li><cite>get_data_for_solr</cite>: return a json format to send to Solr for indexing</li>
+</ul>
+</div></blockquote>
+<p>If you have multiple collections, you can define a base class to define <cite>solr_hosts</cite> and <cite>zookeeper_hosts</cite>, and the subclasses to only specify the <cite>collection_name</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wukong.models</span> <span class="kn">import</span> <span class="n">SolrDoc</span>
+
+<span class="n">Class</span> <span class="n">BaseDoc</span><span class="p">(</span><span class="n">SolrDoc</span><span class="p">):</span>
+    <span class="n">solr_hosts</span> <span class="o">=</span> <span class="s2">&quot;localhost:8080&quot;</span>
+    <span class="n">zookeeper_hosts</span> <span class="o">=</span> <span class="s2">&quot;localhost:2181&quot;</span>
+
+<span class="n">Class</span> <span class="n">User</span><span class="p">(</span><span class="n">BaseDoc</span><span class="p">)</span>
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+
+<span class="n">Class</span> <span class="n">Car</span><span class="p">(</span><span class="n">BaseDoc</span><span class="p">)</span>
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="s2">&quot;cars&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="documents-retrieval">
+<h3>Documents Retrieval<a class="headerlink" href="#documents-retrieval" title="Permalink to this headline">¶</a></h3>
+<p>Once you define your document class, you can use it to fetch documents in Solr.</p>
+<div class="section" id="filtering">
+<h4>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># fetch all documents whose name is james</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__eq</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose name is not james</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__ne</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose name has james as substring</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__wc</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose name doesn&#39;t have james as substring</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__nwc</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is greater to 30</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__g</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less to 30</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__l</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is greater or equal to 30</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__ge</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less or equal to 30</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__le</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents who lives in either in Ottawa or New York</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">city__in</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ottawa&#39;</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents who lives in neither in Ottawa nor New York</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">city__nin</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ottawa&#39;</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose has zip field</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">zip__ex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose doesn&#39;t have zip field</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">zip__nex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less to 30 and live in Ottawa</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__l</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">city__eq</span><span class="o">=</span><span class="s2">&quot;Ottawa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less to 30 or live in Ottawa</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">OR</span><span class="p">(</span><span class="n">age__l</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">city__eq</span><span class="o">=</span><span class="s2">&quot;Ottawa&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less to 30 or live in Ottawa and also has zip field</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">AND</span><span class="p">(</span><span class="n">OR</span><span class="p">(</span><span class="n">age__l</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">city__eq</span><span class="o">=</span><span class="s2">&quot;Ottawa&quot;</span><span class="p">),</span> <span class="n">zip__ex</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose age is less to 30 and live in Ottawa</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__l</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">city__eq</span><span class="o">=</span><span class="s2">&quot;Ottawa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sorting">
+<h4>Sorting<a class="headerlink" href="#sorting" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># fetch all documents sorted by age ascendingly</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents whose name is james sorted by age descendingly</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__eq</span><span class="o">=</span><span class="s2">&quot;james&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="s1">&#39;-age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="search">
+<h4>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># fetch all documents matched `james bond` in the default field (usually `text`)</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;james bond&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents matched `james bond` in name (weight 10) and city (weight 1)</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;james bond&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># fetch all documents matched `james bond` in default field with at least 2 tokens matched</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;james bond&#39;</span><span class="p">,</span> <span class="n">minimin_matches</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="grouping">
+<h4>Grouping<a class="headerlink" href="#grouping" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># group all documents by `gender` and fetch the groups</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+
+<span class="c1"># group all documents by `gender` and `city` and fetch the groups</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+
+<span class="c1"># group all documents by `gender` and `city` and get 3 documents in each group</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">],</span> <span class="n">group_limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="faceting">
+<h4>Faceting<a class="headerlink" href="#faceting" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># facet all documents by `gender` and fetch the facets</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">facet_by</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">facets</span><span class="p">()</span>
+
+<span class="c1"># facet all documents by `gender` and `city` and fetch the facets</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">facet_by</span><span class="p">([</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">facets</span><span class="p">()</span>
+
+<span class="c1"># facet all documents by `gender` and `city` and fetch the facets at least having 10 docs</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">facet_by</span><span class="p">([</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">],</span> <span class="n">mincount</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pagination">
+<h4>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># paginate documents and get 100 documents starting from 200</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-fields">
+<h4>Return Fields<a class="headerlink" href="#return-fields" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># only fetch the fields (id and name) for each document</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s1">&#39;id, &#39;</span><span class="n">name</span><span class="s1">&#39;).all()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="raw-documents">
+<h4>Raw Documents<a class="headerlink" href="#raw-documents" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># fetch all documents matched `james bond` and fetch a list of raw json rather than SolrDoc list</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;james bond&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">raw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chained-query">
+<h4>Chained Query<a class="headerlink" href="#chained-query" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># fetch the documents matching `james bond` and with age greater than 30, and get 100 documents starting from 200</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;james bond&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">age__g</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="document-creation">
+<h3>Document Creation<a class="headerlink" href="#document-creation" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a document in Solr</span>
+<span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;James Bond&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;London&quot;</span><span class="p">)</span>
+
+<span class="c1"># Batch create within one request to Solr</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;James Bond&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;London&quot;</span><span class="p">),</span>
+    <span class="n">Entity</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12346</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Kate&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;New York&quot;</span><span class="p">)</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">SolrDocs</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+<span class="n">docs</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="document-update">
+<h3>Document Update<a class="headerlink" href="#document-update" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;James Bond&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;London&quot;</span><span class="p">)</span>
+
+<span class="c1"># Update a document in Solr</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Jim Bond&quot;</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;Ottawa&quot;</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="document-delete">
+<h3>Document Delete<a class="headerlink" href="#document-delete" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;James Bond&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;London&quot;</span><span class="p">)</span>
+
+<span class="c1"># Update a document in Solr</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+<span class="c1"># Batch delete within one request to Solr</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;James Bond&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;London&quot;</span><span class="p">),</span>
+    <span class="n">Entity</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">12346</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Kate&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;New York&quot;</span><span class="p">)</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">SolrDocs</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+<span class="n">docs</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complex-query">
+<h3>Complex Query<a class="headerlink" href="#complex-query" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># You can always use `User.solr.select` to build your custom query</span>
+<span class="n">User</span><span class="o">.</span><span class="n">solr</span><span class="o">.</span><span class="n">select</span><span class="p">({</span>
+    <span class="n">q</span><span class="p">:</span> <span class="s2">&quot;it is complex&quot;</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, SurveyMonkey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
